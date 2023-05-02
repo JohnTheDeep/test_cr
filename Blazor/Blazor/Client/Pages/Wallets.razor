@@ -1,0 +1,32 @@
+﻿@page "/Wallets"
+
+@using Blazor.Shared.Models;
+@inject HttpClient _http
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+            <th>Id</th>
+            <th>Address</th>
+            <th>Balance</th>
+        </thead>
+        <tbody>
+            @foreach(var wallet in _wallets.Values)
+            {
+                <tr>
+                    <td>@wallet.Id</td>
+                    <td>@wallet.Address</td>
+                    <td>@wallet.Balance</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code{
+    protected Dictionary<int, Wallet> _wallets = new();
+    protected override async Task OnInitializedAsync()
+    {
+        _wallets = await _http.GetFromJsonAsync<Dictionary<int,Wallet>>("api/Wallets");
+    }
+}
